@@ -46,6 +46,8 @@ public class Test {
         WebElement comicsTitle = driver.findElement(By.className("page-title"));
         Assert.assertTrue("No se redirigió a la categoría Cómics",comicsTitle.isDisplayed());
         Assert.assertEquals("Category: comics",comicsTitle.getText());
+        driver.close();
+        driver.quit();
 
     }
 
