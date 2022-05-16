@@ -1,8 +1,15 @@
-Feature: Categoría Cómics
-  Como usuario, quiero leer chistes de testers para reírme y pasar un buen rato.
+Feature: Login to SF Org
+  As a user, I'd like to login to my Salesforce Org.
 
-  Scenario: Ingresar a la categoría 'Comics' desde la pantalla 'Home'
+  Scenario: Login with the correct password
+    Given The user is in the Org Login Page
+    When the user fills in an email: "incubatorteam@oktana.com"
+    And the password is correct: "incubator2022"
+    Then the Setup Page should be shown to the user
 
-    Given El usuario se encuentra en la pantalla Home de I'm a Little Tester
-    When Hace clic en The Little Testers Comic
-    Then Se debe redirigir a la pantalla Comics
+
+  Scenario: Login with an incorrect password
+    Given The user is in the Org Login Page
+    When the user fills in an email: "incubatorteam@oktana.com"
+    And the password is incorrect: "incubator2023"
+    Then an error message should be shown to the user

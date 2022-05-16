@@ -8,47 +8,76 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.concurrent.TimeUnit;
 
 public class Test {
 
     public ChromeDriver driver;
 
-    @Given("^El usuario se encuentra en la pantalla Home de I'm a Little Tester$")
-    public void el_usuario_se_encuentra_en_la_pantalla_Home_de_I_m_a_Little_Tester() throws Throwable {
+
+    @Given("^The user is in the Org Login Page$")
+    public void the_user_is_in_the_Org_Login_Page() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        //throw new PendingException();
         System.setProperty("webdriver.chrome.driver","./src/test/resources/chromedriver/chromedriver");
-        //Iniciando objeto driver:
+        //Starting Driver Object:
         driver=new ChromeDriver();
 
-        //Entrando a la página:
-        driver.get("https://imalittletester.com/");
+        //Setting implicit wait time:
+        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 
-        //Maximizando la página:
+        //Getting into the page:
+        driver.get("https://teamorg2-dev-ed.lightning.force.com");
+
+        //Maximizing the page:
         driver.manage().window().maximize();
+    }
+
+    @When("^the user fills in an email: \"([^\"]*)\"$")
+    public void the_user_fills_in_an_email(String strUsername) throws Throwable {
+
+        WebElement inputUsername=driver.findElement(By.id("username"));
+        inputUsername.sendKeys(strUsername);
 
     }
 
-    @When("^Hace clic en The Little Testers Comic$")
-    public void hace_clic_en_The_Little_Testers_Comic() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new PendingException();
-        WebElement comicsLink = driver.findElement(By.id("menu-item-2008"));
-        comicsLink.click();
+    @When("^the password is correct: \"([^\"]*)\"$")
+    public void the_password_is_correct(String strPass) throws Throwable {
 
+        WebElement inputPass=driver.findElement(By.id("password"));
+        WebElement acceptButton=driver.findElement(By.cssSelector("#Login"));
+
+        inputPass.sendKeys(strPass);
+        acceptButton.click();
     }
 
-    @Then("^Se debe redirigir a la pantalla Comics$")
-    public void se_debe_redirigir_a_la_pantalla_Comics() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        //throw new PendingException();
+    @When("^the password is incorrect: \"([^\"]*)\"$")
+    public void the_password_is_incorrect(String strPass) throws Throwable {
 
-        WebElement comicsTitle = driver.findElement(By.className("page-title"));
-        Assert.assertTrue("No se redirigió a la categoría Cómics",comicsTitle.isDisplayed());
-        Assert.assertEquals("Category: comics",comicsTitle.getText());
+        WebElement inputPass=driver.findElement(By.id("password"));
+        WebElement acceptButton=driver.findElement(By.cssSelector("#Login"));
+
+        inputPass.sendKeys(strPass);
+        acceptButton.click();
+    }
+
+    @Then("^the Setup Page should be shown to the user$")
+    public void the_Setup_Page_should_be_shown_to_the_user() throws Throwable {
+
+        WebElement searchBar = driver.findElement(By.cssSelector("#\\31 55\\:82\\;a"));
+        Assert.assertTrue("Login Failed",searchBar.isDisplayed());
         driver.close();
         driver.quit();
+    }
 
+
+
+    @Then("^an error message should be shown to the user$")
+    public void an_error_message_should_be_shown_to_the_user() throws Throwable {
+
+        WebElement errorMessage = driver.findElement(By.cssSelector("#error"));
+        Assert.assertTrue("Login Succeeded when it Shouldn't",errorMessage.isDisplayed());
+        driver.close();
+        driver.quit();
     }
 
 }
