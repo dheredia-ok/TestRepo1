@@ -4,7 +4,7 @@ Feature: Login to SF Org
   Scenario: Login with the correct password
     Given The user is in the Org Login Page
     When the user fills in an email: "incubatorteam@oktana.com"
-    And the password is correct: "incubator2022"
+    And the password is correct: "incubator2021"
     Then the Setup Page should be shown to the user
 
 
