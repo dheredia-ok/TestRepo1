@@ -12,24 +12,15 @@ import java.util.concurrent.TimeUnit;
 
 public class Test {
 
-    public ChromeDriver driver;
+    public ChromeDriver driver=Hooks.getDriver();
 
 
     @Given("^The user is in the Org Login Page$")
     public void the_user_is_in_the_Org_Login_Page() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        System.setProperty("webdriver.chrome.driver","./src/test/resources/chromedriver/chromedriver");
-        //Starting Driver Object:
-        driver=new ChromeDriver();
+        String loginPageTitle="Login | Salesforce";
 
-        //Setting implicit wait time:
-        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+        Assert.assertEquals(loginPageTitle, driver.getTitle());
 
-        //Getting into the page:
-        driver.get("https://teamorg2-dev-ed.lightning.force.com");
-
-        //Maximizing the page:
-        driver.manage().window().maximize();
     }
 
     @When("^the user fills in an email: \"([^\"]*)\"$")
@@ -65,8 +56,6 @@ public class Test {
 
         WebElement searchBar = driver.findElement(By.cssSelector("#\\31 55\\:82\\;a"));
         Assert.assertTrue("Login Failed",searchBar.isDisplayed());
-        driver.close();
-        driver.quit();
     }
 
 
@@ -76,8 +65,6 @@ public class Test {
 
         WebElement errorMessage = driver.findElement(By.cssSelector("#error"));
         Assert.assertTrue("Login Succeeded when it Shouldn't",errorMessage.isDisplayed());
-        driver.close();
-        driver.quit();
     }
 
 }
